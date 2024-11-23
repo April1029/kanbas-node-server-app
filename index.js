@@ -17,15 +17,28 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+// Configure CORS
+const allowedOrigins = [
+    process.env.NETLIFY_URL || "http://localhost:3000",
+    "http://localhost:4000" // Include your dev server for flexibility
+];
+
 app.use(
     cors({
         credentials: true,
-        origin: process.env.NETLIFY_URL || "http://localhost:3000"
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                console.error(`Blocked by CORS: ${origin}`);
+                callback(new Error("Not allowed by CORS"));
+            }
+        }
     })
 );
 
 const sessionOptions = {
-    secret: process.env.SESSION_SECRET || "xr7kHlX6IX6HQHI",
+    secret: process.env.SESSION_SECRET || "kanbas",
     resave: false,
     saveUninitialized: false,
 };
