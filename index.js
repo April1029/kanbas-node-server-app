@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(
     cors({
         credentials: true,
-        origin: ["https://a5--kanbas-react-web-app-jingjing.netlify.app", "http://localhost:3000"]
+        origin: ["https://a5--kanbas-react-web-app-jingjing.netlify.app", "http://localhost:3000", "https://a6--kanbas-react-web-app-jingjing.netlify.app"]
     })
 );
 
