@@ -2,6 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import dotenv from 'dotenv';
 import express from 'express';
+import mongoose from "mongoose";
 import session from "express-session";
 
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
@@ -13,14 +14,15 @@ import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import UserRoutes from "./Kanbas/Users/routes.js";
 
 dotenv.config();
-
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
+mongoose.connect(CONNECTION_STRING);
 const app = express();
 app.use(express.json());
 
 app.use(
     cors({
         credentials: true,
-        origin: "https://a5--kanbas-react-web-app-jingjing.netlify.app" || "http://localhost:3000"
+        origin: ["https://a5--kanbas-react-web-app-jingjing.netlify.app", "http://localhost:3000"]
     })
 );
 
