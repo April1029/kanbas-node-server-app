@@ -1,19 +1,18 @@
 import * as modulesDao from "./dao.js";
 
 export default function ModuleRoutes(app) {
-    app.delete("/api/modules/:moduleId", (req, res) => {
+    app.delete("/api/modules/:moduleId", async (req, res) => {
         const { moduleId } = req.params;
+        const status = await modulesDao.deleteModule(moduleId);
 
-        modulesDao.deleteModule(moduleId);
-
-        res.sendStatus(204);
+        res.send(status);
     });
-    app.put("/api/modules/:moduleId", (req, res) => {
+    app.put("/api/modules/:moduleId", async (req, res) => {
         const { moduleId } = req.params;
         const moduleUpdates = req.body;
 
-        modulesDao.updateModule(moduleId, moduleUpdates);
+        const status = await modulesDao.updateModule(moduleId, moduleUpdates);
 
-        res.sendStatus(204);
+        res.send(status);
     });
 }

@@ -21,15 +21,33 @@ app.use(express.json());
 
 app.use(
     cors({
-        credentials: true,
-        origin: ["https://a5--kanbas-react-web-app-jingjing.netlify.app", "http://localhost:3000", "https://a6--kanbas-react-web-app-jingjing.netlify.app"]
+        credentials: true, // Allow cookies and credentials
+        origin: [
+            "http://localhost:3000", 
+            "https://a5--kanbas-react-web-app-jingjing.netlify.app", 
+            "https://a6--kanbas-react-web-app-jingjing.netlify.app"
+        ],
     })
 );
+
+app.use(session({
+    secret: '123456', // Replace with a secure, unique key
+    resave: false,            // Prevents unnecessary session resaving
+    saveUninitialized: false, // Doesn't save uninitialized sessions
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // Optional: Session expiration (e.g., 1 day)
+        secure: false, // Set to true if using HTTPS
+    },
+}));
 
 const sessionOptions = {
     secret: process.env.SESSION_SECRET || "kanbas",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        sameSite: 'none',  // Must be 'none' for cross-origin cookies
+        secure: process.env.NODE_ENV !== 'development',  // true in production
+    }
 };
 if (process.env.NODE_ENV !== "development") {
     sessionOptions.proxy = true;
@@ -52,3 +70,5 @@ ModuleRoutes(app);
 UserRoutes(app);
 
 app.listen(process.env.PORT || 4000)
+
+
